@@ -38,5 +38,10 @@ public class Song extends BaseEntity {
     private Categorie categorie;
 
 
-
+    public Song(String titre, Categorie categorie, String string, Album album) {
+        this.setAlbum(album);
+        this.setCategorie(categorie);
+        this.setTitre(titre);
+        this.setAudio(string);
+    }
 }

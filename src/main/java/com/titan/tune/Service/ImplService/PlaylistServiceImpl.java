@@ -65,6 +65,8 @@ public class PlaylistServiceImpl implements PlaylistService {
         if (!this.ifSongAlreadyInPlaylist(song, playlist)) {
             songPlaylist.setTrackingId(UUID.randomUUID());
         }
+        songPlaylist.setInside(true);
+
 
         var response = this.songPlaylistRepository.save(songPlaylist);
 

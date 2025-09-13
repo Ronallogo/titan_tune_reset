@@ -96,5 +96,17 @@ public class CategorieController {
         return new ResponseEntity<>(  HttpStatus.OK) ;
     }
 
-    public ResponseEntity<?>
+
+    @GetMapping(path="/getByName/{name}")
+    @Operation(summary = "    get  categories by name", description = "   get  categorie by name ")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "categorie    got successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?> getByName(@PathVariable String name){
+
+        var response = this.service.findByName(name) ;
+        return new ResponseEntity<>(response , HttpStatus.OK) ;
+    }
 }

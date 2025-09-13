@@ -1,0 +1,33 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+abstract class AbstractList
+abstract AbstractCollection
+interface List
+interface Collection
+
+class User
+class Admin
+
+User <|-- Admin
+
+User "1"--"*" Song : has
+
+class Song{
+}
+
+class User{
+
+   id : Long
+   nom : String
+   prenom : String
+   ...
+}
+
+class Admin{
+
+}
+
+
+
+@enduml

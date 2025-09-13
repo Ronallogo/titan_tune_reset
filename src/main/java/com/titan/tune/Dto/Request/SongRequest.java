@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public  record SongRequest(
         String titre,
-        MultipartFile audio,
+         String audio,
         UUID albumTrackingId,
         UUID categorieTrackingId
 ) {

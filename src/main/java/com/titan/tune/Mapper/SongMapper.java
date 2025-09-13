@@ -8,6 +8,7 @@ import com.titan.tune.Entity.Categorie;
 import com.titan.tune.Entity.Song;
 import org.hibernate.sql.ast.tree.cte.CteColumn;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,14 +24,14 @@ public class SongMapper {
             Categorie categorie
         ) {
 
-        Song song = new Song();
-        song.setTitre(request.titre());
-        song.setAudio(String.valueOf(request.audio()));
-        song.setCategorie(categorie);
-        song.setAlbum(album);
-        song.setTrackingId(UUID.randomUUID());
+        return  new Song(
+                request.titre() ,
+                categorie  ,
+                request.audio().toString() ,
+                album
+        ) ;
 
-        return song;
+
 
     }
 
@@ -54,7 +55,8 @@ public class SongMapper {
                 entity.getTrackingId(),
                 entity.getTitre(),
                 entity.getAudio(),
-                entity.getAlbum().getArtiste().getAlias()
+                entity.getAlbum().getArtiste().getFirstName() +" "+
+                        entity.getAlbum().getArtiste().getLastName()
         );
     }
 

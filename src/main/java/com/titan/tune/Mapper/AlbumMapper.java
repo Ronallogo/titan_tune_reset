@@ -19,19 +19,20 @@ public class AlbumMapper {
             return    new AlbumResponse(
                     entity.getTrackingId()  ,
                     entity.getTitreAlbum(),
-                    entity.getArtiste().getAlias()
+                    entity.getArtiste().getFirstName() + " "+
+                            entity.getArtiste().getLastName()
             ) ;
     }
 
     public  Album toEntity(AlbumRequest request ,
                            Artiste artiste ){
-        Album entity = new Album() ;
 
-        entity.setArtiste(artiste) ;
-        entity.setTitreAlbum(request.titreAlbum());
-        entity.setTrackingId(UUID.randomUUID());
 
-        return  entity ;
+        return   new Album(
+                artiste ,
+                request.titreAlbum() ,
+                request.imageAlbum()
+        ) ;
 
     }
 
@@ -40,6 +41,7 @@ public class AlbumMapper {
 
         entity.setArtiste(artiste) ;
         entity.setTitreAlbum(request.titreAlbum());
+        entity.setImageAlbum(request.imageAlbum());
 
         return  entity ;
 

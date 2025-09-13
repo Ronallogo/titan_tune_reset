@@ -27,7 +27,7 @@ public interface CategorieRepository extends JpaRepository<Categorie, Long> {
 
     @Query(value= """
                 SELECT * FROM categories
-                WHERE nom_categorie = :name
+                WHERE nom_categorie LIKE CONCAT('%', :name, '%')
             """ , nativeQuery = true)
     List<Categorie> findCategorieByName(@Param("name") String name);
 }

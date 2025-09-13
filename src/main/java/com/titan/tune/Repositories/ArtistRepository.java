@@ -6,6 +6,7 @@ import com.titan.tune.Entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.NativeQuery;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,17 +16,23 @@ import java.util.UUID;
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artiste, Long> {
-    Optional<Artiste> findByTrackingId(UUID trackingId);
+
 
     @Query(value= """
             SELECT * FROM users
-            WHERE email = :email  AND type_role = 'ARTISTE'
+            WHERE tracking_id = :trackingId AND role  = 'ARTIST'
+            """ , nativeQuery = true)
+    Optional<Artiste> findByTrackingId(@Param("trackingId") UUID trackingId);
+
+    @Query(value= """
+            SELECT * FROM users
+            WHERE email = :email  AND role = 'ARTIST'
             """  , nativeQuery = true)
-    Optional<Artiste> findByEmail(String email);
+    Optional<Artiste> findByEmail(@Param("email")String email);
 
     @Query(value = """
             SELECT  *  FROM users
-            WHERE type_role = 'ARTISTE'
+            WHERE role = 'ARTISTE'
             ORDER BY id DESC
             """ , nativeQuery = true)
     List<Artiste> findAllArtiste();

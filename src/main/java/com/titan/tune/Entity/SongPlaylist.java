@@ -40,4 +40,10 @@ public class SongPlaylist   extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "playlist_id" , nullable = false , updatable = false)
     private Playlist playlist ;
+
+    public SongPlaylist(SongPlaylist_id songPlaylistId, Song song, Playlist playlist) {
+        this.setPlaylist(playlist);
+        this.setSongPlaylistId(songPlaylistId);
+        this.setSong(song);
+    }
 }

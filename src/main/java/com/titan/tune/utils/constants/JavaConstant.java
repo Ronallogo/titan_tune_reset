@@ -23,6 +23,7 @@ public class JavaConstant {
             "/user/registerClient",
             "/user/login",
             "/categorie/**" ,
+            "/album/**" ,
             "/song/**" ,
 
             "/user/etat/**",

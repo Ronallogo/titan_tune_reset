@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 
 
 
+
 @Entity
 @Data
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper = true)
 @DiscriminatorValue("CLIENTS")
 public class Clients extends User{
 

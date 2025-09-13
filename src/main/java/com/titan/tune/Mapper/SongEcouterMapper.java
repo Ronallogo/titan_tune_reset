@@ -19,14 +19,17 @@ public class SongEcouterMapper {
             Song song ,
             User user
     ){
-        return SongEcouter.builder()
-                .songEcouterId(SongEcouter_id.builder()
-                        .SongId(song.getSongId())
-                        .userId(user.getId())
-                        .build())
-                .Song(song)
-                .user(user)
-                .build() ;
+        return new SongEcouter(
+                new SongEcouter_id(
+                        song.getSongId() ,
+                        user.getId()
+                ) ,
+                song ,
+                user
+
+        );
+
+
     }
 
 
@@ -43,7 +46,8 @@ public class SongEcouterMapper {
         return new  SongEcouterForOneUser(
                 entity.getTrackingId() ,
                 entity.getSong().getTitre() ,
-                entity.getSong().getAlbum().getArtiste().getAlias() ,
+                entity.getSong().getAlbum().getArtiste().getLastName() + " " +
+                        entity.getSong().getAlbum().getArtiste().getFirstName(),
                 entity.getSong().getAlbum().getTitreAlbum()
         );
     }

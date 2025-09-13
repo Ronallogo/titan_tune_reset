@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -34,8 +35,11 @@ public class SongController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<?> create(@RequestBody SongRequest request){
-            var response = this.service.create(request) ;
+    public ResponseEntity<?> create(
+            @RequestBody SongRequest request
+
+            ){
+            var response = this.service.create( request) ;
             return new ResponseEntity<>(response , HttpStatusCode.valueOf(200));
     }
 
@@ -52,7 +56,33 @@ public class SongController {
     }
 
 
-    @PostMapping(path="/update/{trackingIdSong}")
+    @Operation(summary = "get all song", description = "get all song")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "all song  got successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping(path="/getAll")
+    public   ResponseEntity<?> get(){
+        var response = this.service.getAll() ;
+
+        return new ResponseEntity<>(response , HttpStatus.OK) ;
+    }
+
+    @Operation(summary = "get all song for a artist")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "all song  got successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    @GetMapping(path="/getAllForOne/{trackingIdArtiste}")
+    public ResponseEntity<?>getAllForOne(@PathVariable UUID trackingIdArtiste){
+        var response = this.service.getSongsByArtiste(trackingIdArtiste) ;
+        return  new ResponseEntity<>(response , HttpStatus.OK) ;
+    }
+
+
+    @PutMapping(path="/update/{trackingIdSong}")
     @Operation(summary = "update song", description = " update song by its tracking id and the data modification")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "song  updated successfully"),
@@ -92,9 +122,24 @@ public class SongController {
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
-    public ResponseEntity<?> delete(@PathVariable UUID trackingId){
-        this.service.delete(trackingId);
+    public ResponseEntity<?> delete(@PathVariable UUID trackingIdSong){
+        this.service.delete(trackingIdSong );
+
         return  new ResponseEntity<>(  HttpStatus.OK);
+    }
+
+
+    @GetMapping(path="/getByCategorieName/{category_name}")
+    @Operation(summary = " delete song by category name" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "song  delete successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?> getByCategorieName(@PathVariable String category_name){
+        var response = this.service.findByNomCategorieContaining(category_name) ;
+
+        return new ResponseEntity<>(response , HttpStatus.OK) ;
     }
 
 

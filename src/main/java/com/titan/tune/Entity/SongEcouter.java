@@ -36,7 +36,10 @@ public class SongEcouter  extends BaseEntity {
     private   Song   Song ;
 
 
+    public SongEcouter(SongEcouter_id songEcouterId, Song song, User user) {
 
-
-
+        this.setSongEcouterId(songEcouterId);
+        this.setSong(song);
+        this.setUser(user);
+    }
 }

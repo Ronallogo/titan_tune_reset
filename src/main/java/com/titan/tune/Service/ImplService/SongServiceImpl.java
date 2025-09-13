@@ -14,6 +14,7 @@ import com.titan.tune.Repositories.SongRepository;
 import com.titan.tune.Service.SongService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -72,8 +73,10 @@ public class SongServiceImpl implements SongService {
         Album album = this.albumRepository.findByTrackingId(request.albumTrackingId())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "album not found"));
 
-        Song song = this.songMapper.toEntity(request , album , categorie );
 
+
+        Song song = this.songMapper.toEntity(  request    ,   album , categorie );
+        song.setTrackingId(UUID.randomUUID());
         var result   = this.songRepository.save(song);
 
         return this.songMapper.toResponse(result);
@@ -100,7 +103,12 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public  void delete(UUID trackingId) {
-        songRepository.deleteByTrackingId(trackingId);
+        var song = this.songRepository.findByTrackingId(trackingId)
+                        .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND , "song not found")) ;
+
+        this.songRepository.delete(song);
+
+
     }
 
     @Override

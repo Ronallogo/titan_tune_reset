@@ -3,6 +3,7 @@ package com.titan.tune.Repositories;
 import com.titan.tune.Entity.Album;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,5 +19,13 @@ public  interface AlbumRepository  extends JpaRepository<Album, Long> {
 
     @Query(value="SELECT *  FROM  albums ORDER BY album_id DESC" , nativeQuery=true)
     List<Album> getAll() ;
+
+
+
+    @Query(value= """
+            SELECT * FROM albums 
+            WHERE  artiste_id = :id
+            """ , nativeQuery = true)
+    List<Album> getAllForOneArtiste(@Param("id") Long id) ;
 
 }

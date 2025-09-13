@@ -13,6 +13,7 @@ import org.hibernate.boot.registry.selector.spi.StrategyCreator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -36,10 +37,10 @@ public class AlbumServiceImpl implements AlbumService {
 
 
     @Override
-    public AlbumResponse create(AlbumRequest request ,  UUID trackingIdArtiste) {
-        Assert.notNull(trackingIdArtiste , "artiste tracking id must be not null");
+    public AlbumResponse create(MultipartFile file ,  AlbumRequest request  ) {
+        Assert.notNull( request ,  "request must be not null");
 
-        Artiste artiste = this.artisteRepository.findByTrackingId(trackingIdArtiste)
+        Artiste artiste = this.artisteRepository.findByTrackingId(request.artisteTrackingId())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND  , "artiste not found"));
 
         Album album = this.mapper.toEntity(request , artiste) ;
@@ -62,8 +63,18 @@ public class AlbumServiceImpl implements AlbumService {
     }
 
     @Override
-    public  void delete(UUID trakingId) {
-         this.repository.deleteByTrackingId(trakingId);
+    public List<AlbumResponse> getAllForOneArtiste(UUID trackingIdAlbum) {
+        return List.of();
+    }
+
+    @Override
+    public  void delete(UUID trackingId) {
+
+         var album = this.repository.findByTrackingId(trackingId)
+                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND , "album  not found"));
+
+         this.repository.delete(album);
+
     }
 
     @Override

@@ -54,7 +54,7 @@ public class SongEcouterServiceImpl implements SongEcouterService {
 
         var result =  this.repository.save(s) ;
 
-        return this.mapper.toResponse(s);
+        return this.mapper.toResponse(result);
     }
 
     @Override
@@ -115,6 +115,7 @@ public class SongEcouterServiceImpl implements SongEcouterService {
                 .orElseThrow(()-> new RuntimeException("trackingId invalide")) ;
 
         List<SongEcouter> list = this.repository.findAllByTrackingIdUser(user.getTrackingId()) ;
+
         return  list.stream()
                 .map(this.mapper::toResponseSearch)
                 .toList() ;

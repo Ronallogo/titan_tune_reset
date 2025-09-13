@@ -1,12 +1,11 @@
 package com.titan.tune.Service.ImplService;
 
 
+import com.titan.tune.Dto.Request.AdminRequest;
 import com.titan.tune.Dto.Request.ArtistsRequest;
 import com.titan.tune.Dto.Request.ClientsRequest;
 import com.titan.tune.Dto.Request.LoginRequest;
-import com.titan.tune.Dto.Response.ArtistResponse;
-import com.titan.tune.Dto.Response.ClientResponse;
-import com.titan.tune.Dto.Response.UserAuthenticationResponse;
+import com.titan.tune.Dto.Response.*;
 import com.titan.tune.Entity.Artiste;
 
 import com.titan.tune.Entity.Clients;
@@ -35,12 +34,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -171,6 +172,52 @@ public class UserServiceImpl implements UserService {
         Clients savedClient = clientRepository.save(client);
 
         return clientMapper.toResponse(savedClient);
+    }
+
+    @Override
+    public AdminResponse inscriptionAdmin(AdminRequest request) {
+        return null;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        return null;
+    }
+
+    @Override
+    public void activation(Map<String, String> activation) {
+
+
+    }
+
+    @Override
+    public void modifierMotDePasse(Map<String, String> parametres) {
+
+    }
+
+    @Override
+    public void nouveauMotDePasse(Map<String, String> parametres) {
+
+    }
+
+    @Override
+    public void deleteUser(UUID trackingId) {
+
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        return List.of();
+    }
+
+    @Override
+    public UserResponse updateUser(UUID trackingId, UserResponse response) {
+        return null;
+    }
+
+    @Override
+    public UserResponse getUserByTrackingId(UUID trackingId) {
+        return null;
     }
 
     private EmailRequest buildDefaultEmailRequest(User user, String password) {

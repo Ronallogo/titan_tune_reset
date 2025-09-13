@@ -2,6 +2,7 @@ package com.titan.tune.Service.ImplService;
 
 import com.titan.tune.Dto.Request.FavorisRequest;
 import com.titan.tune.Dto.Request.SongPlaylistRequest;
+import com.titan.tune.Dto.Response.FavorisForOneResponse;
 import com.titan.tune.Dto.Response.FavorisResponse;
 import com.titan.tune.Dto.Response.SongPlaylistResponse;
 import com.titan.tune.Entity.*;
@@ -84,5 +85,19 @@ public class FavorisServiceImpl implements FavorisService {
                 .orElseThrow(() -> new IllegalArgumentException("No favoris found with this trackingId"));
         favorisRepository.delete(favoris);
 
+    }
+
+    @Override
+    public List<FavorisForOneResponse> getAllForOneUser(UUID trackingIdUser) {
+
+        Assert.notNull(trackingIdUser , "tarcking id must  be not null");
+
+         Clients user = this.clientRepository.findByTrackingId(trackingIdUser)
+                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND ,  "client not found"));
+
+
+        return  this.favorisRepository.favorisForOneClient(user.getId())
+                .stream().map(this.favorisMapper::toResponseForOne)
+                .toList();
     }
 }

@@ -1,6 +1,7 @@
 package com.titan.tune.Entity;
 
 
+import com.titan.tune.utils.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name="ALBUMS")
-public class Album {
+public class Album extends BaseEntity {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long albumId ;
@@ -25,8 +26,13 @@ public class Album {
     private String imageAlbum ;
     @ManyToOne
     @JoinColumn(name = "artiste_id")
-    private Artiste artiste ;
+    private  User artiste ;
 
 
+    public Album(Artiste artiste, String titre , String imageAlbum) {
 
+        this.setArtiste(artiste);
+        this.setTitreAlbum(titre);
+        this.setImageAlbum(imageAlbum);
+    }
 }

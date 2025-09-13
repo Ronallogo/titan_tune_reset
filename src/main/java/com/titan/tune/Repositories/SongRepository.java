@@ -19,23 +19,23 @@ public interface SongRepository extends JpaRepository<Song, Long> {
 
     @Query(value= """
             SELECT s.* FROM songs s
-            JOIN categories c ON 
-            WHERE 
+            JOIN categories c ON c.categorie_id = s.categorie_id
+            WHERE c.nom_categorie LIKE CONCAT('%' , :nomCategorie , '%')
             """ , nativeQuery = true)
-    List<Song> findByNomCategorieContaining(String nomCategorie);
+    List<Song> findByNomCategorieContaining(@Param("nomCategorie") String nomCategorie);
 
 
     void deleteByTrackingId(UUID trackingId);
 
 
     @Query(value= """
-            SELECT * FROM  song
+            SELECT * FROM  songs
             WHERE tracking_id = :trackingId
             """ , nativeQuery = true)
     Optional<Song> findByTrackingId(UUID trackingId);
 
 
-    @Query(value="SELECT * FROM songs ORDER BY  s.song_id DESC" ,  nativeQuery = true)
+    @Query(value="SELECT * FROM songs s ORDER BY  s.song_id DESC" ,  nativeQuery = true)
     List<Song> getAll();
 
 
@@ -45,9 +45,9 @@ public interface SongRepository extends JpaRepository<Song, Long> {
             WHERE s.album_id IN (
                 SELECT a.album_id
                 FROM albums a
-                JOIN users u ON u.user_id = a.artiste_id
+                JOIN users u ON u.id = a.artiste_id
                 WHERE u.tracking_id = :artisteTrackingId
-                AND u.type_role = 'ARTISTE'
+                AND u.role = 'ARTIST'
             )
             ORDER BY s.song_id DESC;
             

@@ -2,9 +2,11 @@ package com.titan.tune.Mapper;
 
 
 import com.titan.tune.Dto.Request.FavorisRequest;
+import com.titan.tune.Dto.Response.FavorisForOneResponse;
 import com.titan.tune.Dto.Response.FavorisResponse;
 import com.titan.tune.Entity.Clients;
 import com.titan.tune.Entity.Favoris;
+import com.titan.tune.Entity.Favoris_id;
 import com.titan.tune.Entity.Song;
 import org.springframework.stereotype.Component;
 
@@ -19,12 +21,12 @@ public class FavorisMapper {
             Clients client ,
             Song song
     ) {
-        Favoris favoris = new Favoris();
-        favoris.setClient(client) ;
-        favoris.setSong(song);
-        favoris.setTrackingId(UUID.randomUUID()) ;
 
-        return favoris;
+        return  new Favoris(
+                new Favoris_id(song.getSongId() , client.getId()) ,
+                client ,
+                song
+        );
     }
 
     public FavorisResponse toResponse(Favoris favoris){
@@ -37,9 +39,25 @@ public class FavorisMapper {
         );
     }
 
+    public  FavorisForOneResponse toResponseForOne(Favoris entity){
+            return new FavorisForOneResponse(
+                    entity.getTrackingId() ,
+                    entity.getSong().getTitre() ,
+                    entity.getSong().getAlbum().getArtiste().getLastName() + " " +
+                            entity.getSong().getAlbum().getArtiste().getFirstName(),
+                    entity.getDateUpdated()
+            ) ;
+    }
+
     public List<FavorisResponse> toResponseList(List<Favoris> list){
         return  list.stream()
                 .map(this::toResponse)
+                .toList() ;
+    }
+
+    public List<FavorisForOneResponse> toResponseForOne(List<Favoris> list){
+        return  list.stream()
+                .map(this::toResponseForOne)
                 .toList() ;
     }
 }

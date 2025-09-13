@@ -24,7 +24,7 @@ import java.util.*;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 @EntityListeners(AuditingEntityListener.class)
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
 public class User extends BaseEntity implements UserDetails {
     @Id

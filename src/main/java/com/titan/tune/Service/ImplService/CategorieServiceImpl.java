@@ -84,5 +84,10 @@ public class CategorieServiceImpl implements CategorieService {
     @Override
     public void deleteByTrackingId(UUID trackingId) {
         repository.deleteByTrackingId(trackingId);
+
+        var categorie = this.repository.findByTrackingId(trackingId)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND  , "category not found" ));
+
+        this.repository.delete(categorie);
     }
 }

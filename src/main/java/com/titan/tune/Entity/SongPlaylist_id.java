@@ -17,8 +17,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SongPlaylist_id {
 
-
-
     @Column(name="song" , nullable = false , updatable = false)
     private  Long songId ;
 

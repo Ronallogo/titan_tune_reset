@@ -29,17 +29,13 @@ public class SongPlaylistMapper {
             Song song ,
             Playlist playlist
     ){
-        return  SongPlaylist.builder()
-                .songPlaylistId(
-                        SongPlaylist_id.builder()
-                                .playlistId(playlist.getPlaylistId())
-                                .songId(song.getSongId())
-                                .build()
-                )
-                .playlist(playlist)
-                .isInside(true)
-                .song(song)
-                .build() ;
+        return new SongPlaylist(
+                new  SongPlaylist_id(song.getSongId() , playlist.getPlaylistId()) ,
+                song ,
+                playlist
+        ) ;
+
+
     }
 
     public List<SongPlaylistResponse> toResponseList(List<SongPlaylist> list){

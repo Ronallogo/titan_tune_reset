@@ -1,10 +1,12 @@
-package com.titan.tune.Controller;/*
-package nitchcorp.titan.tunes.Controller;
+package com.titan.tune.Controller;
 
-import nitchcorp.titan.tunes.Dto.Request.UserRequest;
-import nitchcorp.titan.tunes.Dto.Response.UserResponse;
-import nitchcorp.titan.tunes.Service.ImplService.UserServiceImpl;
 
+
+
+
+import com.titan.tune.Dto.Request.UserRequest;
+import com.titan.tune.Dto.Response.UserResponse;
+import com.titan.tune.Service.ImplService.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -30,7 +32,7 @@ public class UserController {
         this.userServiceImpl = userServiceImpl;
     }
 
-    @PostMapping("/inscription")
+  /*  @PostMapping("/inscription")
     @Operation(summary = "Inscription d'un nouvel utilisateur", description = "Crée un nouveau compte utilisateur")
     @ApiResponse(responseCode = "200", description = "Utilisateur créé avec succès", content = @Content(schema = @Schema(implementation = UserResponse.class)))
     @ApiResponse(responseCode = "400", description = "Données invalides")
@@ -43,7 +45,7 @@ public class UserController {
             return ResponseEntity.badRequest()
                     .body(Map.of("error", "INSCRIPTION_FAILED", "message", "Échec de l'inscription: " + e.getMessage()));
         }
-    }
+    }*/
 
     @PostMapping("/activation")
     @Operation(summary = "Activer un compte utilisateur", description = "Active le compte utilisateur avec le code d'activation")
@@ -128,4 +130,4 @@ public class UserController {
                     .body(Map.of("error", "DELETE_FAILED", "message", "Échec de la suppression: " + e.getMessage()));
         }
     }
-}*/
+}
