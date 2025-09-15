@@ -37,7 +37,7 @@ public class AlbumServiceImpl implements AlbumService {
 
 
     @Override
-    public AlbumResponse create(MultipartFile file ,  AlbumRequest request  ) {
+    public AlbumResponse create( AlbumRequest request  ) {
         Assert.notNull( request ,  "request must be not null");
 
         Artiste artiste = this.artisteRepository.findByTrackingId(request.artisteTrackingId())

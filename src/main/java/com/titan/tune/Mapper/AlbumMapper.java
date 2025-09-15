@@ -20,7 +20,8 @@ public class AlbumMapper {
                     entity.getTrackingId()  ,
                     entity.getTitreAlbum(),
                     entity.getArtiste().getFirstName() + " "+
-                            entity.getArtiste().getLastName()
+                            entity.getArtiste().getLastName() ,
+                    entity.getImageAlbum()
             ) ;
     }
 

@@ -17,6 +17,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -113,4 +114,31 @@ public class AuthController {
             return ResponseEntity.internalServerError().build();
         }
     }
+
+
+
+    @GetMapping(path = "/allClient")
+    @Operation(summary = "get All client" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = " list clients  got successfully"),
+            @ApiResponse(responseCode = "404", description = "Artist not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error or email sending failed")
+    })
+     public ResponseEntity<?> getAllClient(){
+        var response = this.userService.allClient() ;
+        return new ResponseEntity<>(response  , HttpStatusCode.valueOf(200));
+
+     }
+
+    @GetMapping(path = "/allArtist")
+    @Operation(summary = "get All  artist" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = " list  artist  got successfully"),
+            @ApiResponse(responseCode = "404", description = "Artist not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error or email sending failed")
+    })
+     public ResponseEntity<?> getAllArtist(){
+        var response = this.userService.allArtiste() ;
+        return  new ResponseEntity<>(response , HttpStatus.OK);
+     }
 }

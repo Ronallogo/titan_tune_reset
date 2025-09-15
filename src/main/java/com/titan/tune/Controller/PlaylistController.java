@@ -74,7 +74,7 @@ public class PlaylistController {
     }
 
     @GetMapping(path="/all")
-    @Operation(summary = " get all    playlist")
+    @Operation(summary = " get all playlist")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = " list  playlist  got successfully"),
             @ApiResponse(responseCode = "400", description = "Invalid request data"),
@@ -115,7 +115,12 @@ public class PlaylistController {
     }
 
 
-
+    @Operation(summary = " add song to a playlist" )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "   song   added successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
     @PostMapping(path="/addSong")
     public ResponseEntity<?> addSongIntoPlaylist(@RequestBody SongPlaylistRequest request){
 
@@ -124,10 +129,46 @@ public class PlaylistController {
 
     }
 
-    @GetMapping(path="/allSongForOne/tracking_id_playlist/{tracking_id_p}")
-    public ResponseEntity<?> allSongForOnePlaylist(@PathVariable UUID tracking_id_playlist){
-        var response = this.service.allSongForOnePlaylist(tracking_id_playlist);
+    @GetMapping(path="/allSongForOne/{tracking_id_p}")
+    @Operation(summary = " reach all song for one playlist  " )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "   list song   got successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?> allSongForOnePlaylist(@PathVariable UUID tracking_id_p){
+        var response = this.service.allSongForOnePlaylist(tracking_id_p);
         return  new ResponseEntity<>(response , HttpStatus.OK);
+    }
+
+
+    @PutMapping(path = "/removeSongForPlaylist/{trackingIdPlaylist}/{trackingIdSong}")
+    @Operation(summary = " remove song for a playlist   " )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "   song  removed successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?> removeSongIntoPlaylist(
+            @PathVariable UUID trackingIdPlaylist ,
+            @PathVariable UUID trackingIdSong
+    ){
+          this.service.removeSongToPlaylist(trackingIdPlaylist , trackingIdSong);
+
+          return  new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping(path="/getAllSongForPlaylist/{trackingIdSong}")
+    @Operation(summary = " setup playlist's visibility    " )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "  visibility  changed successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid request data"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<?>  getAllPlaylistForOneSong(@PathVariable UUID  trackingIdSong){
+        var response = this.service.getAllPlaylistForOneSong(trackingIdSong);
+
+        return  new ResponseEntity<>(response  , HttpStatus.OK);
     }
 
 }

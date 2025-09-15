@@ -16,30 +16,35 @@ import java.util.UUID;
 public interface PlaylistRepository extends JpaRepository<Playlist, Long> {
 
 
-    @Query(value="SELECT * FROM playlist WHERE  titre ILIKE :keyword" , nativeQuery=true)
+    @Query(value="SELECT * FROM playlists WHERE  titre ILIKE :keyword" , nativeQuery=true)
     List<Playlist> findByTitre(@Param("keyword") String keyword);
 
-    @Query(value="SELECT  *  FROM playlist    WHERE tracking_id = :trackingId"  , nativeQuery = true)
+    @Query(value="SELECT  *  FROM playlists    WHERE tracking_id = :trackingId"  , nativeQuery = true)
     Optional<Playlist> findByTrackingId(@Param("trackingId") UUID trackingId);
 
 
     @Query(value= """
-         SELECT  p.* FROM playlist p
-         JOIN _user  u ON  p.client_id = u.user_id
+         SELECT  p.* FROM playlists p
+         JOIN users  u ON  p.client_id = u.id
          WHERE p.client_id =  :client_id
          """ , nativeQuery = true)
     List<Playlist> findAllForOne(@Param("client_id")  Long  client_id) ;
 
     @Query(
             value = """
-            SELECT s.* FROM song s
+            SELECT s.* FROM songs s
             WHERE s.song_id IN
-            (SELECT sp.song_id FROM song_playlist sp
+            (SELECT sp.song_id FROM song_playlists sp
             WHERE sp.playlist_id = :playlist_id ) ;
             """ , nativeQuery = true
     )
     List<Song> findAllSongForOnePlaylist(@Param("playlist_id") Long playlist_id) ;
 
+
+    @Query(value= """
+            SELECT * FROM playlists ORDER BY playlist_id DESC ;
+            """ , nativeQuery = true)
+    List<Playlist> getAll() ;
 
 
 

@@ -20,31 +20,31 @@ public interface SongEcouterRepository  extends JpaRepository<SongEcouter, Long>
 
 
 
-    @Query(value="SELECT * FROM  song_ecouter WHERE tracking_id = :trackingId" , nativeQuery = true)
+    @Query(value="SELECT * FROM  song_ecouters WHERE tracking_id = :trackingId" , nativeQuery = true)
     Optional<SongEcouter> findBytrackingId(@Param("trackingId") UUID trackingId);
 
-    @Query(value="SELECT s.*  FROM song_ecouter s " +
-            " JOIN _user u ON u.user_id = s.user_id " +
+    @Query(value="SELECT s.*  FROM song_ecouters s " +
+            " JOIN  users u ON u.id = s.user_id " +
             "WHERE u.tracking_id = :trackingIdUser  " , nativeQuery = true)
     List<SongEcouter> findAllByTrackingIdUser(@Param("trackingIdUser") UUID trackingIdUser);
 
-    @Query(value = "SELECT se.* FROM song_ecouter se " +
-            "JOIN song s ON se.song_id = s.song_id " +
+    @Query(value = "SELECT se.* FROM song_ecouters se " +
+            "JOIN songs s ON se.song_id = s.song_id " +
             "WHERE LOWER(s.titre) LIKE LOWER(CONCAT('%', :title, '%')) " +
             "ORDER BY s.titre ASC",
             nativeQuery = true)
     List<SongEcouter> findByTitle(@Param("title") String title);
 
-    @Query(value = "SELECT se.*  FROM  song_ecouter se WHERE tracking_id  = :trackingId" , nativeQuery = true)
+    @Query(value = "SELECT se.*  FROM  song_ecouters se WHERE tracking_id  = :trackingId" , nativeQuery = true)
     Optional<SongEcouter> findByTrackingId(@Param("trackingId") UUID trackingId);
 
 
-    @Query(value = "SELECT COUNT(*) FROM song_ecouter " , nativeQuery = true)
+    @Query(value = "SELECT COUNT(*) FROM song_ecouters " , nativeQuery = true)
     Integer totalSongEcouter();
 
     @Query(value = """
-             SELECT s.titre AS titre ,  COUNT(se.*) AS nbrEcoute FROM song_ecouter se
-            JOIN song s ON s.song_id = se.song_id
+             SELECT s.titre AS titre ,  COUNT(se.*) AS nbrEcoute FROM song_ecouters se
+            JOIN songs s ON s.song_id = se.song_id
             WHERE s.song_id =  :song_id_p
             GROUP BY titre
             """ , nativeQuery = true)
@@ -52,10 +52,12 @@ public interface SongEcouterRepository  extends JpaRepository<SongEcouter, Long>
 
 
     @Query(value = """
-                SELECT u.nom AS nom , u.prenom AS prenom ,
+                SELECT u.last_name AS nom , u.first_name AS prenom ,
                 COUNT(*) AS total_ecoutes
-                FROM song_ecouter s
-                JOIN _user u ON u.user_id  = s._user
+                FROM song_ecouters s
+                JOIN songs sg ON sg.song_id = s.song_id
+                JOIN albums a ON a.album_id = sg.album_id
+                JOIN  users u ON u.id  = a.artiste_id
                 GROUP BY nom , prenom
                 ORDER  BY total_ecoutes DESC
                 LIMIT  1
@@ -67,8 +69,8 @@ public interface SongEcouterRepository  extends JpaRepository<SongEcouter, Long>
     @Query(value = """
             SELECT s.titre AS  titre   ,\s
             COUNT(*) AS total_ecoutes
-            FROM song_ecouter se
-            JOIN song s ON s.song_id  = se.song
+            FROM song_ecouters se
+            JOIN songs s ON s.song_id  = se.song_id
             GROUP BY  titre
             ORDER  BY total_ecoutes DESC
             LIMIT  1
@@ -81,7 +83,7 @@ public interface SongEcouterRepository  extends JpaRepository<SongEcouter, Long>
             SELECT s.titre AS  titre   ,\s
             COUNT(*) AS total_liked
             FROM favoris f
-            JOIN song s ON s.song_id  = f.song_id
+            JOIN songs s ON s.song_id  = f.song_id
             WHERE s.song_id =  :song_id_p
             GROUP BY titre
             LIMIT  1 ;\s
@@ -94,12 +96,26 @@ public interface SongEcouterRepository  extends JpaRepository<SongEcouter, Long>
           SELECT s.titre AS  titre ,   
           COUNT(*) AS total_liked
           FROM favoris f
-          JOIN song s ON s.song_id  = f.song_id
+          JOIN songs s ON s.song_id  = f.song_id
           GROUP BY titre
           ORDER BY total_liked DESC
           LIMIT  1  ;
             """ , nativeQuery = true)
     Map<String , Object> songWithMostLike();
+
+    @Query(value= """
+            
+            SELECT s.titre AS titre ,  COUNT(*) AS nbrTime FROM songs s
+            JOIN song_ecouters se ON se.song_id = s.song_id\s
+            GROUP BY titre;
+            """ , nativeQuery = true)
+    List<Map<String , Object>> howMayTimeEachSongWasListen() ;
+
+
+   /* @Query(value= """
+            
+            """ , nativeQuery = true)
+    Object tauxRetention() ;*/
 
 
 }

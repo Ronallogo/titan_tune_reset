@@ -35,11 +35,15 @@ public class SongEcouter  extends BaseEntity {
     @JoinColumn(name = "song_id" , nullable = false)
     private   Song   Song ;
 
+    @JoinColumn(name = "nbr_listening" , nullable = false)
+    private Integer nbrListening ;
+
 
     public SongEcouter(SongEcouter_id songEcouterId, Song song, User user) {
 
         this.setSongEcouterId(songEcouterId);
         this.setSong(song);
         this.setUser(user);
+        this.setNbrListening(this.getNbrListening() + 1);
     }
 }

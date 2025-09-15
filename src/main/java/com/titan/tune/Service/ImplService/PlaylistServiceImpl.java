@@ -104,8 +104,13 @@ public class PlaylistServiceImpl implements PlaylistService {
     @Override
     public List<SongResponse> getAllSongForPlaylist(UUID trackingIdPlaylist) {
 
+        Playlist  p = this.repository.findByTrackingId(trackingIdPlaylist)
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND , "playlist not found"));
 
-        return List.of();
+        List<Song> listSong = this.songRepository.findAllByPlaylistId(p.getPlaylistId());
+
+        return listSong.stream().map(this.songMapper::toResponse)
+                .toList();
     }
 
     @Override
@@ -192,7 +197,7 @@ public class PlaylistServiceImpl implements PlaylistService {
 
     @Override
     public List<PlaylistResponse> getAll() {
-        List<Playlist> list = this.repository.findAll();
+        List<Playlist> list = this.repository.getAll();
         return this.mapper.toResponseList(list);
     }
 
@@ -228,6 +233,15 @@ public class PlaylistServiceImpl implements PlaylistService {
     }
 
     @Override
+    public List<SongResponse> allSongInPlaylist() {
+
+        List<Song> listSong = this.songPlaylistRepository.allSongInPlaylist() ;
+
+        return  listSong.stream().map(this.songMapper::toResponse)
+                .toList();
+    }
+
+    @Override
     public List<SongResponse> allSongForOnePlaylist(UUID tracking_id_playlist) {
         if (tracking_id_playlist == null) throw new RuntimeException("tracking id null");
 
@@ -240,11 +254,6 @@ public class PlaylistServiceImpl implements PlaylistService {
                 .toList();
     }
 
-   /* public UUID loadTrackingId(Song song, Playlist playlist) {
-        return this.songPlaylistRepository.getTrackingId(song.getSongId(), playlist.getPlaylistId())
-                .orElse(null);
 
-
-    }*/
 
 }

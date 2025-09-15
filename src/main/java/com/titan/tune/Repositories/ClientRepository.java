@@ -12,8 +12,8 @@ public interface ClientRepository extends JpaRepository<Clients, Long> {
 
     @Query(value= """
             SELECT * FROM  users
-            WHERE tracking_id = :trackingId AND 
-            type_role = 'CLIENT'
+            WHERE tracking_id = :trackingId AND
+            role = 'CLIENT'
             """ , nativeQuery=true)
     Optional<Clients> findByTrackingId(UUID trackingId);
 }

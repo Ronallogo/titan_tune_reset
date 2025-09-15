@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface AlbumService {
-    AlbumResponse create(MultipartFile file ,  AlbumRequest request  );
+    AlbumResponse create(AlbumRequest request  );
 
     AlbumResponse getAlbum(UUID trackingId);
 

@@ -277,4 +277,21 @@ public class UserServiceImpl implements UserService {
 
         return artistMapper.toResponse(artists);
     }
+
+
+
+    public List<ClientResponse> allClient(){
+            return this.userRepository.findAllClient()
+                    .stream().map(user ->this.clientMapper.toResponse((Clients)user))
+                    .toList() ;
+    }
+
+    public List<ArtistResponse> allArtiste(){
+        return this.userRepository.findAllArtist()
+                .stream().map(user-> this.artistMapper.toResponse((Artiste) user))
+                .toList() ;
+    }
+
+
+
 }

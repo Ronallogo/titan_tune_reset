@@ -43,5 +43,7 @@ public interface PlaylistService {
 
     PlaylistResponse changeVisibility(UUID trackingIdPlaylist) ;
 
+    List<SongResponse>  allSongInPlaylist();
+
     List<SongResponse> allSongForOnePlaylist(UUID tracking_id_playlist) ;
 }

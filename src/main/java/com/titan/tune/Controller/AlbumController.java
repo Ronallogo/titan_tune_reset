@@ -37,10 +37,9 @@ public class AlbumController {
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     public ResponseEntity<?> create(
-            @RequestPart("file") MultipartFile file ,
-            @RequestPart("request") AlbumRequest request
+            @RequestBody AlbumRequest request
           ){
-        var response = this.service.create(file ,  request ) ;
+        var response = this.service.create(request ) ;
         return  new ResponseEntity<>(response , HttpStatusCode.valueOf(200));
     }
 

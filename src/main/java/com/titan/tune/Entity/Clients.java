@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
-@DiscriminatorValue("CLIENTS")
+@DiscriminatorValue("CLIENT")
 public class Clients extends User{
 
     public Clients(String FirstName, String LastName,String Email, String Password , String Phone){

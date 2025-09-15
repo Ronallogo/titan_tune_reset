@@ -39,6 +39,16 @@ public interface SongRepository extends JpaRepository<Song, Long> {
     List<Song> getAll();
 
 
+    @Query(value="""
+        SELECT s.* FROM  songs s
+        WHERE  s.song_id IN (
+            SELECT song_id FROM song_playlists sp
+            WHERE sp.playlist_id = :playlistId AND sp.is_inside = 'true'
+        )
+""" , nativeQuery = true)
+    List<Song> findAllByPlaylistId(@Param("playlistId") Long playlistId) ;
+
+
     @Query(value = """
             SELECT s.*
             FROM songs s

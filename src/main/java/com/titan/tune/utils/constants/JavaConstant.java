@@ -25,6 +25,12 @@ public class JavaConstant {
             "/categorie/**" ,
             "/album/**" ,
             "/song/**" ,
+            "/playlist/**" ,
+            "/favoris/**" ,
+            "/songEcouter/**",
+            "/suivre/**" ,
+            "/user/**" ,
+            "/stats/**" ,
 
             "/user/etat/**",
             "/swagger-ui/**",

@@ -24,7 +24,7 @@ public class Artiste extends User implements Serializable {
     @Column(name = "description" , length = 200)
     private String description;
 
-    @Column(name = "alias" , nullable = false , length = 50)
+    @Column(name = "alias"  , length = 50)
     private  String alias ;
 
 
