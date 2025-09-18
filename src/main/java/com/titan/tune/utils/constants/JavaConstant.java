@@ -22,24 +22,20 @@ public class JavaConstant {
             "/user/registerArtist",
             "/user/registerClient",
             "/user/login",
-            "/categorie/**" ,
-            "/album/**" ,
+            "/categories/**" ,
+            "/albums/**" ,
             "/song/**" ,
             "/playlist/**" ,
             "/favoris/**" ,
             "/songEcouter/**",
             "/suivre/**" ,
+            " /api/v3/api-docs/**" ,
             "/user/**" ,
             "/stats/**" ,
-
+            "/api/swagger-ui/index.html/**",
             "/user/etat/**",
             "/swagger-ui/**",
             "/v3/api-docs/**",
             "/swagger-ui.html"
-    };
-
-    public static final String[] URL_FOR_VALIDATE_ACCOUNTS = {
-            API_BASE_URL + "/demandeur/valide/**",
-            API_BASE_URL + "/offreur/valide/**"
     };
 }
