@@ -46,7 +46,8 @@ public class CategorieController {
     @Operation(summary = "Update a category", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "200", description = "Category updated successfully")
     @ApiResponse(responseCode = "404", description = "Category not found")
-    public ResponseEntity<CategorieResponse> updateCategory(
+    public ResponseEntity<CategorieResponse>
+    updateCategory(
             @PathVariable UUID trackingId, @RequestBody CategorieRequest request) {
         log.info("Updating category with ID: {}", trackingId);
         return ResponseEntity.ok(service.updateCategorie(trackingId, request));
