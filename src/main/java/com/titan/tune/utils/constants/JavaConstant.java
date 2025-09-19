@@ -25,6 +25,7 @@ public class JavaConstant {
             "/categories/**" ,
             "/albums/**" ,
             "/song/**" ,
+            "/server/**",
             "/playlist/**" ,
             "/favoris/**" ,
             "/songEcouter/**",

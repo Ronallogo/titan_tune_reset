@@ -18,7 +18,7 @@ public class  OpenApiConfig {
                         .version("1.0.0")
                         .description("Documentation de l'API pour l'application Titan Tune.")
                         .contact(new Contact()
-                                .name("Ton Nom")
+                                .name("nitchcorp")
                                 .email("nitchcorp@gmail.com")
                                 .url("http://www.nitchcorp.tech"))
                         .license(new License()

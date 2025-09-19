@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name:  titan_tune-swagger-docker
+    env: docker
+    image:  ronallogo/titan_tunes:0.0.1
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: "render"
+      - key: PORT
+        value: "8081"

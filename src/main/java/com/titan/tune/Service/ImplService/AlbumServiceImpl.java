@@ -94,6 +94,7 @@ public class AlbumServiceImpl implements AlbumService {
         Album album = this.repository.findByTrackingId(trackingId)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , "album not found")) ;
 
+
         Artiste artiste = this.artisteRepository.findByTrackingId(request.artisteTrackingId())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND , " artiste not found")) ;
 
