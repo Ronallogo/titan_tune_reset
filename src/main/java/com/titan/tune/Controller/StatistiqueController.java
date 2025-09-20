@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/stats")
+@RequestMapping(path="/stats")
 @Tag(name = "Statistiques", description = "Endpoints pour les statistiques d'écoute, de likes, de playlists, etc.")
 public class StatistiqueController {
 
@@ -35,7 +35,7 @@ public class StatistiqueController {
             description = "Retourne le nombre total d'utilisateurs ayant un compte activé"
     )
     @ApiResponse(responseCode = "200", description = "Succès")
-    @GetMapping("/nbrUserEnabled")
+    @GetMapping(path="/nbrUserEnabled")
     public ResponseEntity<?> nbruserEnabled() {
         var response = this.service.nbrUserEnabled();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -49,7 +49,7 @@ public class StatistiqueController {
             @ApiResponse(responseCode = "200", description = "Succès"),
             @ApiResponse(responseCode = "400", description = "UUID invalide")
     })
-    @GetMapping("/nbrLikeForOneSong/{trackingIdSong}")
+    @GetMapping(path="/nbrLikeForOneSong/{trackingIdSong}")
     public ResponseEntity<?> nbrLikeForOneSong(
             @Parameter(description = "UUID de la chanson", required = true)
             @PathVariable UUID trackingIdSong
@@ -80,7 +80,7 @@ public class StatistiqueController {
             description = "Retourne l'artiste ayant le plus grand nombre d'écoutes"
     )
     @ApiResponse(responseCode = "200", description = "Succès")
-    @GetMapping("/artistMostListen")
+    @GetMapping(path="/artistMostListen")
     public ResponseEntity<?> artistMostListen() {
         var response = this.service.artistMostListen();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -102,7 +102,7 @@ public class StatistiqueController {
             description = "Retourne la chanson ayant reçu le plus de likes"
     )
     @ApiResponse(responseCode = "200", description = "Succès")
-    @GetMapping("/songWithMostLike")
+    @GetMapping(path="/songWithMostLike")
     public ResponseEntity<?> songWithMostLike() {
         var response = this.service.songWithMostLike();
         return new ResponseEntity<>(response, HttpStatus.OK);
@@ -116,7 +116,7 @@ public class StatistiqueController {
             @ApiResponse(responseCode = "200", description = "Succès"),
             @ApiResponse(responseCode = "400", description = "UUID invalide")
     })
-    @GetMapping("/HowManyPlaylistContainThisSong/{trackingIdSong}")
+    @GetMapping(path="/HowManyPlaylistContainThisSong/{trackingIdSong}")
     public ResponseEntity<?> HowManyPlaylistContainThisSong(
             @Parameter(description = "UUID de la chanson", required = true)
             @PathVariable UUID trackingIdSong
