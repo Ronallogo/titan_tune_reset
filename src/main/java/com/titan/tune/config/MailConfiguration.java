@@ -67,8 +67,8 @@ public class MailConfiguration {
         EmailConfiguration defaultConfig = new EmailConfiguration();
         defaultConfig.setHost("smtp.gmail.com");
         defaultConfig.setPort(587);
-        defaultConfig.setUsername("woroukoffijudeprudencio@gmail.com");  // Unifié
-        defaultConfig.setPassword("xvnf dsts taau txzo");  // Nouveau mot de passe
+        defaultConfig.setUsername("ronallogo45@gmail.com");  // Unifié
+        defaultConfig.setPassword("fvrd uvnr xqsw zpat");  // Nouveau mot de passe
         defaultConfig.setSmtpAuth(true);
         defaultConfig.setStarttlsEnable(true);
         return defaultConfig;

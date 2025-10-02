@@ -30,8 +30,8 @@ public class EmailConfigInitializer {
                     emailConfig.setTrackingId(UUID.randomUUID());
                     emailConfig.setHost("smtp.gmail.com");
                     emailConfig.setPort(587);
-                    emailConfig.setUsername("woroukoffijudeprudencio@gmail.com");  // Unifié
-                    emailConfig.setPassword("xvnf dsts taau txzo");  // Nouveau mot de passe
+                    emailConfig.setUsername("ronallogo45@gmail.com");  // Unifié
+                    emailConfig.setPassword("fvrd uvnr xqsw zpat");  // Nouveau mot de passe
                     emailConfig.setSmtpAuth(true);
                     emailConfig.setStarttlsEnable(true);
 
@@ -42,8 +42,8 @@ public class EmailConfigInitializer {
                     logger.info("Configuration email existante trouvée, mise à jour du mot de passe...");
                     EmailConfiguration existingConfig = emailConfigurationRepository.findAll().stream().findFirst().orElse(null);
                     if (existingConfig != null) {
-                        existingConfig.setUsername("woroukoffijudeprudencio@gmail.com");  // Unifié
-                        existingConfig.setPassword("xvnf dsts taau txzo");  // Nouveau mot de passe
+                        existingConfig.setUsername("ronallogo45@gmail.com");  // Unifié
+                        existingConfig.setPassword("fvrd uvnr xqsw zpat");  // Nouveau mot de passe
                         existingConfig.setHost("smtp.gmail.com");
                         existingConfig.setPort(587);
                         existingConfig.setSmtpAuth(true);
