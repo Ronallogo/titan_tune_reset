@@ -1,17 +1,39 @@
 package com.titan.tune.Service.ImplService;
 
 
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.titan.tune.Dto.Request.AdminRequest;
 import com.titan.tune.Dto.Request.ArtistsRequest;
 import com.titan.tune.Dto.Request.ClientsRequest;
 import com.titan.tune.Dto.Request.LoginRequest;
-import com.titan.tune.Dto.Response.*;
+import com.titan.tune.Dto.Response.AdminResponse;
+import com.titan.tune.Dto.Response.ArtistResponse;
+import com.titan.tune.Dto.Response.ClientResponse;
+import com.titan.tune.Dto.Response.UserAuthenticationResponse;
+import com.titan.tune.Dto.Response.UserResponse;
 import com.titan.tune.Entity.Artiste;
-
 import com.titan.tune.Entity.Clients;
 import com.titan.tune.Entity.User;
 import com.titan.tune.Mapper.ArtistMapper;
-
 import com.titan.tune.Mapper.ClientsMapper;
 import com.titan.tune.Repositories.ArtistRepository;
 import com.titan.tune.Repositories.ClientRepository;
@@ -26,26 +48,13 @@ import com.titan.tune.securite.jwt.JwtUtils;
 import com.titan.tune.utils.PasswordGenerator;
 import com.titan.tune.utils.PasswordResult;
 import com.titan.tune.utils.TypeRole;
+
 import jakarta.transaction.Transactional;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
-
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
 
     private final UserRepository userRepository;
     private final JwtUtils jwtUtils;
@@ -59,6 +68,7 @@ public class UserServiceImpl implements UserService {
     private final ClientRepository clientRepository;
 
     public UserServiceImpl(
+        
             UserRepository userRepository,
             JwtUtils jwtUtils,
             PasswordEncoder passwordEncoder,
@@ -77,6 +87,7 @@ public class UserServiceImpl implements UserService {
         this.artistRepository = artistRepository;
         this.clientMapper = clientMapper;
         this.clientRepository = clientRepository;
+         
     }
 
   /*  @Override
@@ -126,8 +137,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional
-    public ArtistResponse createArtist(ArtistsRequest request) {
+    public  Map<String  , Object>  createArtist(ArtistsRequest request) {
+
+        if(this.userRepository.existsByEmail(request.email())) {
+            throw new  RuntimeException( "user déjà existant") ;
+        } 
+
+
+        Map<String , Object> response = new HashMap<>() ; 
         // Mapper la requête en entité
         Artiste artists = artistMapper.toEntity(request);
 
@@ -143,19 +160,33 @@ public class UserServiceImpl implements UserService {
         // Générer et stocker le mot de passe sécurisé
         PasswordResult passwordResult = PasswordGenerator.generateSecurePassword();
         artists.setPassword(passwordResult.hashedPassword());
+        var result = artistRepository.save(artists);
 
-        // Sauvegarder l'artiste
-        artists = artistRepository.save(artists);
+        scheduler.schedule(() -> {
+            try {
+                System.out.println("⏰ Exécution email différé pour: " +   result.getEmail());  
+                EmailRequest emailRequest = buildDefaultEmailRequest(result, passwordResult.plainPassword());
+                 emailService.send(emailRequest, TunesEmailConstants.SUBSCRIPTION_TEMPLATE);
+            } catch (Exception e) {
+                System.out.println("❌ Email échoué: " + e.getMessage());
+            }
+        }, 2, TimeUnit.SECONDS); // ← Délai de 2 secondes
 
-        EmailRequest emailRequest = buildDefaultEmailRequest(artists, passwordResult.plainPassword());
-        emailService.send(emailRequest, TunesEmailConstants.SUBSCRIPTION_TEMPLATE);
+        response.put("content",  artistMapper.toResponse(result)) ; 
+        response.put("activation_code" ,  passwordResult.plainPassword()) ; 
 
-        return artistMapper.toResponse(artists);
+        
+        return response ;
     }
 
     @Override
     @Transactional
-    public ClientResponse inscriptionClient(ClientsRequest clientRequest) {
+    public   ClientResponse inscriptionClient(ClientsRequest clientRequest) {
+
+        if(this.userRepository.existsByEmail(clientRequest.email())) {
+            throw new  RuntimeException( "user déjà existant") ;
+        } 
+
         // Mapper la requête en entité
         Clients client = clientMapper.toEntity(clientRequest);
 
